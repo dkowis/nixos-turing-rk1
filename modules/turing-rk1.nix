@@ -3,16 +3,14 @@
   config,
   pkgs,
   ...
-}:
-let
+}: let
   # $ uuidgen
   rootPartitionUUID = "7a684895-6ef1-4586-98d9-2d2013e98286";
-in
-{
-  imports = [ "${pkgs.path}/nixos/modules/installer/sd-card/sd-image.nix" ];
+in {
+  imports = ["${pkgs.path}/nixos/modules/installer/sd-card/sd-image.nix"];
 
   boot = {
-    kernelPackages = pkgs.linuxPackages_6_17;
+    kernelPackages = pkgs.linuxPackages;
     kernelModules = [
       "nf_tables"
       "raid1"
@@ -48,7 +46,6 @@ in
       # SD cards and internal eMMC drives.
       "mmc_block"
     ];
-
   };
 
   fileSystems = {
@@ -61,10 +58,10 @@ in
   hardware = {
     deviceTree = {
       name = "rockchip/rk3588-turing-rk1.dtb";
-      overlays = [ ];
+      overlays = [];
     };
 
-    firmware = [ ];
+    firmware = [];
   };
 
   sdImage = {
