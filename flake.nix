@@ -1,10 +1,10 @@
 {
   description = "NixOS configuration for the Turing RK1";
   inputs = {
-    # Stable: github:NixOS/nixpkgs/nixos-24.05
+    # Stable: github:NixOS/nixpkgs/nixos-25.11
     # Unstable: github:NixOS/nixpkgs/nixos-unstable
     nixpkgs = {
-      url = "github:NixOS/nixpkgs/nixos-25.05";
+      url = "github:NixOS/nixpkgs/nixos-25.11";
     };
   };
 
