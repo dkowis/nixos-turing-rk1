@@ -12,7 +12,7 @@ in
   imports = [ "${pkgs.path}/nixos/modules/installer/sd-card/sd-image.nix" ];
 
   boot = {
-    kernelPackages = pkgs.linuxPackages_6_18;
+    kernelPackages = pkgs.linuxPackages_latest;
     kernelModules = [
       "nf_tables"
       "raid1"
