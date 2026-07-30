@@ -24,6 +24,18 @@ in
       "cifs"
     ];
 
+    # NixOS renders this as the `loglevel=` kernel parameter. Setting that
+    # parameter directly instead would leave two loglevel= entries on the
+    # command line, with the winner decided by definition order.
+    consoleLogLevel = lib.mkDefault 7;
+
+    # The RK1's only console is the UART exposed through the Turing Pi BMC, so
+    # define console= additively rather than with mkForce: kernelParams is a
+    # list, so an ordinary definition is already guaranteed to reach the
+    # command line, whereas mkForce would also discard every parameter the
+    # consumer sets. mkAfter keeps this last, so it stays the console that
+    # becomes /dev/console if a consumer adds one of their own.
+    #
     # Deliberately no root=/rootfstype= here. NixOS derives the root file
     # system from `fileSystems."/"`, and systemd stage 1 (the default since
     # 25.11) turns that into sysroot.mount itself. Passing root= as well makes
@@ -33,10 +45,7 @@ in
     # fails initrd-switch-root.service and drops the machine into emergency
     # mode. See boot.initrd.systemd.root, which documents that NixOS does not
     # support naming the root file system on the kernel command line.
-    kernelParams = lib.mkForce [
-      "console=ttyS0,115200"
-      "loglevel=7"
-    ];
+    kernelParams = lib.mkAfter [ "console=ttyS0,115200" ];
 
     loader = {
       grub.enable = lib.mkForce false;
