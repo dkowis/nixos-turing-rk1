@@ -12,7 +12,10 @@ in
   imports = [ "${pkgs.path}/nixos/modules/installer/sd-card/sd-image.nix" ];
 
   boot = {
-    kernelPackages = pkgs.linuxPackages_latest;
+    # mkDefault so a consumer can choose their own kernel -- nixpkgs' default
+    # `linuxPackages`, an LTS series, a vendor kernel -- from their own
+    # configuration instead of having to fork this module.
+    kernelPackages = lib.mkDefault pkgs.linuxPackages_latest;
     kernelModules = [
       "nf_tables"
       "raid1"
