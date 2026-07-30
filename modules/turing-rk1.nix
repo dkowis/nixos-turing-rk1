@@ -21,9 +21,16 @@ in
       "cifs"
     ];
 
+    # Deliberately no root=/rootfstype= here. NixOS derives the root file
+    # system from `fileSystems."/"`, and systemd stage 1 (the default since
+    # 25.11) turns that into sysroot.mount itself. Passing root= as well makes
+    # systemd-fstab-generator build sysroot.mount twice, and it rejects the
+    # second definition with "Failed to create unit file
+    # '/run/systemd/generator/sysroot.mount', as it already exists", which
+    # fails initrd-switch-root.service and drops the machine into emergency
+    # mode. See boot.initrd.systemd.root, which documents that NixOS does not
+    # support naming the root file system on the kernel command line.
     kernelParams = lib.mkForce [
-      "root=UUID=${rootPartitionUUID}"
-      "rootfstype=ext4"
       "console=ttyS0,115200"
       "loglevel=7"
     ];
